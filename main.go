@@ -66,7 +66,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 var tmpl = template.Must(template.New("root").Parse(`
-<!doctype html><html><body><center>
+<!DOCTYPE html><html><body><center>
 	<h2>Is Go 1.1 tagged yet?</h2>
 	<h1>
 	{{if .Yes}}
