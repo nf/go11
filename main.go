@@ -30,17 +30,12 @@ var state struct {
 }
 
 func poll(interval time.Duration) {
-	tick := time.NewTicker(interval)
-	defer tick.Stop()
-	for {
-		if isTagged() {
-			state.Lock()
-			state.yes = true
-			state.Unlock()
-			return
-		}
-		<-tick.C
+	for !isTagged() {
+		time.Sleep(interval)
 	}
+	state.Lock()
+	state.yes = true
+	state.Unlock()
 }
 
 func isTagged() bool {
