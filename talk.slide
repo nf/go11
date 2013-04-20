@@ -1,0 +1,142 @@
+Go: a simple programming environment
+
+23 April 2013
+
+Andrew Gerrand
+Google Inc.
+@enneff
+adg@golang.org
+http://golang.org
+
+* Why Go?
+
+- Software should be simple
+
+* Why Go?
+
+- Software *can* be simple
+
+* Go at a glance
+
+- Open source
+- Statically typed
+- Simple type system
+- Concurrency primitives
+- Clean syntax
+- Rich standard library
+- Great tools
+
+This talk is just a taste.
+
+* The Gopher
+
+TODO: image
+
+* Goroutines
+
+Goroutines are lightweight threads that are managed by the Go runtime.
+To run a function in a new goroutine, just put `"go"` before the function call.
+
+.play support/goroutines.go
+
+* Channels
+
+Goroutines communicate via channels. A channel is a typed conduit, like a Unix pipe.
+
+.play support/chan.go
+
+* The sync package
+
+Channels are great, but sometimes other mechanisms are more appropriate.
+The `sync` package provides mutexes, condition variables, and other useful concurrency primitives.
+
+* The time package
+
+* The flag package
+
+* The net/http package
+
+* The html/template package
+
+* An example
+
+_"Is_Go_1.1_released_yet?"_
+
+TODO: screenshot
+
+
+* Sharing state
+
+We must share state ("Is Go 1.1 out?") between the repo poller and the user interface.
+
+This global struct variable contains a `sync.RWMutex` and a boolean value:
+
+.code main.go /var state/,/^}/
+
+To read, take the read lock (multiple goroutines can do this simultaneously):
+	
+	state.RLock()
+	yes := state.yes
+	state.RUnlock()
+
+To write, take the write lock (only one goroutine can do this at a time):
+
+	state.Lock()
+	state.yes = true
+	state.Unlock()
+
+* Polling (1/2)
+
+When a `go1.1` tag exists in the Go repository this URL will return a `"200`OK"` response:
+	
+.code main.go /const changeURL/
+
+The `isTagged` function returns `true` if the `go1.1` tag exists.
+
+.code main.go /func isTagged/,/^}/
+
+* Polling (2/2)
+
+The `poll` function loops until `isTagged` returns `true`.
+Then it updates the state ("Go 1.1 is out!") and returns.
+
+.code main.go /func poll/,/^}/
+
+* The user interface HTML template
+
+.code main.go /var tmpl/,/^`/
+
+* Serving the user interface
+
+The `handler` function is an `http.HandlerFunc`; it serves an HTTP request.
+It puts the `state.yes` and `changeURL` values into a `data` struct,
+and uses it to render the template as the HTTP response.
+
+.code main.go /func handler/,/^}/
+
+* Putting it all together
+
+.code main.go /var \(/,/^}/
+
+* Conclusion
+
+* Learn more about Go
+
+The Go web site 
+
+- [[http://golang.org][golang.org]]
+
+The Go blog
+
+- [[http://blog.golang.org][blog.golang.org]]
+
+Go talks
+
+- [[http://talks.golang.org][talks.golang.org]]
+
+A Tour of Go
+
+- [[http://tour.golang.org][tour.golang.org]]
+
+
+
