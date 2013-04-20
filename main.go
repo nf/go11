@@ -26,27 +26,30 @@ func main() {
 
 var state struct {
 	sync.RWMutex
-	yes bool
+	yes bool // True if Go 1.1 has been tagged.
 }
 
 func poll(interval time.Duration) {
 	tick := time.NewTicker(interval)
 	defer tick.Stop()
 	for {
+		if isTagged() {
+			state.Lock()
+			state.yes = true
+			state.Unlock()
+			return
+		}
 		<-tick.C
-		r, err := http.Head(changeURL)
-		if err != nil {
-			log.Print(err)
-			continue
-		}
-		if r.StatusCode != http.StatusOK {
-			continue
-		}
-		state.Lock()
-		state.yes = true
-		state.Unlock()
-		return
 	}
+}
+
+func isTagged() bool {
+	r, err := http.Head(changeURL)
+	if err != nil {
+		log.Print(err)
+		return false
+	}
+	return r.StatusCode == http.StatusOK
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -67,7 +70,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 var tmpl = template.Must(template.New("root").Parse(`
 <!DOCTYPE html><html><body><center>
-	<h2>Is Go 1.1 tagged yet?</h2>
+	<h2>Is Go 1.1 released yet?</h2>
 	<h1>
 	{{if .Yes}}
 		<a href="{{.URL}}">YES!</a>
