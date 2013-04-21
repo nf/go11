@@ -16,6 +16,14 @@ http://golang.org
 
 - Software *can* be simple
 
+* What I mean by "simple"
+
+- Consistent
+- Orthogonal
+- Predictable
+- Useful by default
+- Readable
+
 * Go at a glance
 
 - Open source
@@ -30,40 +38,82 @@ This talk is just a taste.
 
 * The Gopher
 
-TODO: image
+.image support/gopher.jpg
 
-* Goroutines
+* Hello, Go
+
+.play support/hello.go
+
+* go
 
 Goroutines are lightweight threads that are managed by the Go runtime.
 To run a function in a new goroutine, just put `"go"` before the function call.
 
 .play support/goroutines.go
 
-* Channels
+* chan
 
 Goroutines communicate via channels. A channel is a typed conduit, like a Unix pipe.
 
 .play support/chan.go
 
-* The sync package
+* sync
 
-Channels are great, but sometimes other mechanisms are more appropriate.
-The `sync` package provides mutexes, condition variables, and other useful concurrency primitives.
+Channels are great, but sometimes other concurrency mechanisms are a better fit.
+The `sync` package provides mutexes, condition variables, and more useful primitives.
 
-* The time package
+* time
 
-* The flag package
+The `time` package provides `Time` and `Duration` types, for expressing instants in time and periods of time.
 
-* The net/http package
+.play support/time.go /START/,/END/
 
-* The html/template package
+It also provides a `Location` type for expressing time zones.
+
+.play support/time2.go /START/,/END/
+
+And, as we've already seen, it provides functions related to sleeping.
+
+* net/http (1/2)
+
+The `net/http` package provides an HTTP client.
+
+.play support/http-client.go /func main/,$
+
+The client handles HTTP `Keep-Alive` using a pool of connections, by default.
+(This is configurable, of course.)
+
+* net/http (2/2)
+
+The `net/http` package also provides an HTTP server.
+
+.play support/http-server.go /const/,$
+
+This is a high-performance, DoS-hardened, production-ready web server.
+
+It serves `dl.google.com`.
+
+* html/template 
+
+The `html/template` package provides an HTML templating system that automatically escapes content depending on its context.
+
+.play support/template.go /const/,$
+
+* flag 
+
+The `flag` package provides a simple API for parsing command-line flags.
+
+.play support/flag.go /var/,$
+
+Example invocation (a little different to GNU getopt):
+
+	$ flag -message 'Hold on...' -delay 5m
 
 * An example
 
-_"Is_Go_1.1_released_yet?"_
+_"Is_Go_1.1_out_yet?"_
 
 TODO: screenshot
-
 
 * Sharing state
 
@@ -102,21 +152,29 @@ Then it updates the state ("Go 1.1 is out!") and returns.
 
 .code main.go /func poll/,/^}/
 
-* The user interface HTML template
+* The HTML user interface
+
+The `tmpl` variable is a template that provides the HTML UI.
+It is a global variable, so the template is parsed just once at init time.
 
 .code main.go /var tmpl/,/^`/
 
 * Serving the user interface
 
 The `handler` function is an `http.HandlerFunc`; it serves an HTTP request.
-It puts the `state.yes` and `changeURL` values into a `data` struct,
+It puts the `state.yes` and `changeURL` values into a struct,
 and uses it to render the template as the HTTP response.
 
 .code main.go /func handler/,/^}/
 
 * Putting it all together
 
+The `main` function starts polling in a new goroutine and sets up the web server.
+Some command-line flags enable run time configuration.
+
 .code main.go /var \(/,/^}/
+
+The whole program is just 68 lines of code.
 
 * Conclusion
 
@@ -137,6 +195,4 @@ Go talks
 A Tour of Go
 
 - [[http://tour.golang.org][tour.golang.org]]
-
-
 
