@@ -49,7 +49,7 @@ func isTagged() bool {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	state.RLock()
-	var data = struct {
+	data := struct {
 		Yes bool
 		URL string
 	}{
