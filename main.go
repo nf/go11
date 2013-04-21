@@ -65,7 +65,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 var tmpl = template.Must(template.New("root").Parse(`
 <!DOCTYPE html><html><body><center>
-	<h2>Is Go 1.1 released yet?</h2>
+	<h2>Is Go 1.1 out yet?</h2>
 	<h1>
 	{{if .Yes}}
 		<a href="{{.URL}}">YES!</a>
