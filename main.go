@@ -13,25 +13,25 @@ import (
 const changeURL = "https://code.google.com/p/go/source/detail?r=go1.1"
 
 var (
-	httpAddr     = flag.String("http", "localhost:8080", "Listen address")
-	pollInterval = flag.Duration("poll", time.Second*5, "Poll interval")
+	httpAddr   = flag.String("http", "localhost:8080", "Listen address")
+	pollPeriod = flag.Duration("poll", t*time.Second, "Poll period")
 )
 
 func main() {
 	flag.Parse()
-	go poll(*pollInterval)
+	go poll(*pollPeriod)
 	http.HandleFunc("/", handler)
 	log.Fatal(http.ListenAndServe(*httpAddr, nil))
 }
 
 var state struct {
 	sync.RWMutex
-	yes bool // True if Go 1.1 has been tagged.
+	yes bool // true if Go 1.1 has been tagged.
 }
 
-func poll(interval time.Duration) {
+func poll(period time.Duration) {
 	for !isTagged() {
-		time.Sleep(interval)
+		time.Sleep(period)
 	}
 	state.Lock()
 	state.yes = true

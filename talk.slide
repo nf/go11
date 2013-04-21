@@ -53,16 +53,19 @@ To run a function in a new goroutine, just put `"go"` before the function call.
 
 * chan
 
-Goroutines communicate via channels. A channel is a typed conduit, like a Unix pipe.
+Channels are typed conduits for sychronization and communication between goroutines.
 
-.play support/chan.go
+They're a versatile and exprssive means of modelling concurrent processes.
+
+But we're not going to look at them today. (There's no time!)
 
 * sync
 
 Channels are great, but sometimes other concurrency mechanisms are a better fit.
+
 The `sync` package provides mutexes, condition variables, and more useful primitives.
 
-TODO: example
+.play support/sync.go /func main/,$
 
 * time
 
