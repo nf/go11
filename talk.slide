@@ -55,7 +55,7 @@ To run a function in a new goroutine, just put `"go"` before the function call.
 
 Channels are typed conduits for sychronization and communication between goroutines.
 
-They're a versatile and exprssive means of modelling concurrent processes.
+They're a versatile and expressive means of modelling concurrent processes.
 
 But we're not going to look at them today. (There's no time!)
 
@@ -110,7 +110,7 @@ The `flag` package provides a simple API for parsing command-line flags.
 
 .play support/flag.go /var/,$
 
-Example invocation (a little different to GNU getopt):
+Example invocation (a little different than GNU getopt):
 
 	$ flag -message 'Hold on...' -delay 5m
 
