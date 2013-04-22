@@ -26,7 +26,7 @@ func main() {
 
 var state struct {
 	sync.RWMutex
-	yes bool // true if Go 1.1 has been tagged.
+	yes bool // whether Go 1.1 has been tagged.
 }
 
 func poll(period time.Duration) {
