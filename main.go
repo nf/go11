@@ -14,7 +14,7 @@ const changeURL = "https://code.google.com/p/go/source/detail?r=go1.1"
 
 var (
 	httpAddr   = flag.String("http", "localhost:8080", "Listen address")
-	pollPeriod = flag.Duration("poll", t*time.Second, "Poll period")
+	pollPeriod = flag.Duration("poll", 5*time.Second, "Poll period")
 )
 
 func main() {
