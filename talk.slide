@@ -194,14 +194,14 @@ The whole program is just 68 lines of code.
 
 * One more thing
 
-* Monitoring with expvar (1/2)
+* expvar (1/2)
 
 The `expvar` package allows you to export variables via an HTTP handler
 registered at [[http://localhost:8080/debug/vars][`/debug/vars`]].
 
 .play support/expvar.go
 
-* Monitoring with expvar (1/2)
+* expvar (1/2)
 
 .code main.go /Exported variables/,/^\)/
 
