@@ -18,11 +18,12 @@ http://golang.org
 
 * What I mean by "simple"
 
+- Readable
 - Consistent
 - Orthogonal
 - Predictable
+- Robust
 - Useful by default
-- Readable
 
 * Go at a glance
 
@@ -133,7 +134,7 @@ We must share state ("Is Go 1.1 out?") between the repo poller and the user inte
 
 This global struct variable contains a `sync.RWMutex` and a boolean value:
 
-.code main.go /var state/,/^}/
+.code support/main-orig.go /var state/,/^}/
 
 To read, take the read lock (multiple goroutines can do this simultaneously):
 	
@@ -151,25 +152,25 @@ To write, take the write lock (only one goroutine can do this at a time):
 
 When a `go1.1` tag exists in the Go repository this URL will return a `"200`OK"` response:
 	
-.code main.go /const changeURL/
+.code support/main-orig.go /const changeURL/
 
 The `isTagged` function returns `true` if the `go1.1` tag exists.
 
-.code main.go /func isTagged/,/^}/
+.code support/main-orig.go /func isTagged/,/^}/
 
 * Polling (2/2)
 
 The `poll` function loops until `isTagged` returns `true`.
 Then it updates the state ("Go 1.1 is out!") and returns.
 
-.code main.go /func poll/,/^}/
+.code support/main-orig.go /func poll/,/^}/
 
 * The HTML user interface
 
 The `tmpl` variable is a template that provides the HTML UI.
 It is a global variable, so the template is parsed just once at init time.
 
-.code main.go /var tmpl/,/^`/
+.code support/main-orig.go /var tmpl/,/^`/
 
 * Serving the user interface
 
@@ -177,18 +178,48 @@ The `handler` function is an `http.HandlerFunc`; it serves an HTTP request.
 It puts the `state.yes` and `changeURL` values into a struct,
 and uses it to render the template as the HTTP response.
 
-.code main.go /func handler/,/^}/
+.code support/main-orig.go /func handler/,/^}/
 
 * Putting it all together
 
 The `main` function starts polling in a new goroutine and sets up the web server.
 Some command-line flags enable run time configuration.
 
-.code main.go /var \(/,/^}/
+.code support/main-orig.go /var \(/,/^}/
 
 The whole program is just 68 lines of code.
 
+* Demo
+
+* One more thing
+
+* Monitoring with expvar (1/2)
+
+The `expvar` package allows you to export variables via an HTTP handler
+registered at `/debug/vars`.
+
+.play support/expvar.go
+
+* Monitoring with expvar (1/2)
+
+.code main.go /Exported variables/,/^\)/
+
+.code main.go /func isTagged/,/^}/
+
+.code main.go /func handler/,/hitCount/
+
+* Demo
+
 * Conclusion
+
+Simplicity revisited:
+
+- Readable
+- Consistent
+- Orthogonal
+- Predictable
+- Robust
+- Useful by default
 
 * Learn more about Go
 

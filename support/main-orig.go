@@ -2,7 +2,6 @@
 package main
 
 import (
-	"expvar"
 	"flag"
 	"html/template"
 	"log"
@@ -16,14 +15,6 @@ const changeURL = "https://code.google.com/p/go/source/detail?r=go1.1"
 var (
 	httpAddr   = flag.String("http", "localhost:8080", "Listen address")
 	pollPeriod = flag.Duration("poll", 5*time.Second, "Poll period")
-)
-
-// Exported variables OMIT
-var (
-	hitCount       = expvar.NewInt("hitCount")
-	pollCount      = expvar.NewInt("pollCount")
-	pollError      = expvar.NewString("pollError")
-	pollErrorCount = expvar.NewInt("pollErrorCount")
 )
 
 func main() {
@@ -48,19 +39,15 @@ func poll(period time.Duration) {
 }
 
 func isTagged() bool {
-	pollCount.Add(1) // HL
 	r, err := http.Head(changeURL)
 	if err != nil {
 		log.Print(err)
-		pollError.Set(err.Error()) // HL
-		pollErrorCount.Add(1)      // HL
 		return false
 	}
 	return r.StatusCode == http.StatusOK
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	hitCount.Add(1) // HL
 	state.RLock()
 	data := struct {
 		Yes bool
