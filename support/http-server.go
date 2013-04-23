@@ -6,11 +6,9 @@ import (
 	"net/http"
 )
 
-const listenAddr = "localhost:4000"
-
 func main() {
 	http.HandleFunc("/", handler)
-	err := http.ListenAndServe(listenAddr, nil)
+	err := http.ListenAndServe("localhost:8080", nil)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -3,18 +3,16 @@ Go: a simple programming environment
 23 April 2013
 
 Andrew Gerrand
-Google Inc.
+Google
 @enneff
 adg@golang.org
 http://golang.org
 
 * Why Go?
 
-- Software should be simple
+* Software should be simple
 
-* Why Go?
-
-- Software *can* be simple
+* Software can be simple
 
 * What I mean by "simple"
 
@@ -27,13 +25,14 @@ http://golang.org
 
 * Go at a glance
 
-- Open source
+- Compiled
 - Statically typed
+- Clean syntax
 - Simple type system
 - Concurrency primitives
-- Clean syntax
 - Rich standard library
 - Great tools
+- Open source
 
 This talk is just a taste.
 
@@ -93,7 +92,7 @@ The client handles HTTP `Keep-Alive` using a pool of connections, by default.
 
 The `net/http` package also provides an HTTP server.
 
-.play support/http-server.go /const/,$
+.play support/http-server.go /func main/,$
 
 This is a high-performance, DoS-hardened, production-ready web server.
 
@@ -165,20 +164,21 @@ Then it updates the state ("Go 1.1 is out!") and returns.
 
 .code support/main-orig.go /func poll/,/^}/
 
+* Serving the user interface
+
+The `handler` function serves an HTTP request.
+
+It puts the `state.yes` and `changeURL` values into a struct,
+and uses the struct to render the template as the HTTP response.
+
+.code support/main-orig.go /func handler/,/^}/
+
 * The HTML user interface
 
 The `tmpl` variable is a template that provides the HTML UI.
 It is a global variable, so the template is parsed just once at init time.
 
 .code support/main-orig.go /var tmpl/,/^`/
-
-* Serving the user interface
-
-The `handler` function is an `http.HandlerFunc`; it serves an HTTP request.
-It puts the `state.yes` and `changeURL` values into a struct,
-and uses it to render the template as the HTTP response.
-
-.code support/main-orig.go /func handler/,/^}/
 
 * Putting it all together
 
@@ -196,7 +196,7 @@ The whole program is just 68 lines of code.
 * Monitoring with expvar (1/2)
 
 The `expvar` package allows you to export variables via an HTTP handler
-registered at `/debug/vars`.
+registered at [[http://localhost:8080/debug/vars][`/debug/vars`]].
 
 .play support/expvar.go
 
@@ -220,6 +220,17 @@ Simplicity revisited:
 - Predictable
 - Robust
 - Useful by default
+
+* Stuff I didn't talk about
+
+- Types and interfaces
+- Concurrency in depth
+- Packages and the build system
+- Code formatting
+- Testing
+- Benchmarking and profiling
+- Debugging
+- Documentation
 
 * Learn more about Go
 
