@@ -16,6 +16,7 @@ http://golang.org
 
 * What I mean by "simple"
 
+- Small
 - Readable
 - Consistent
 - Orthogonal
@@ -214,6 +215,7 @@ registered at [[http://localhost:8080/debug/vars][`/debug/vars`]].
 
 Simplicity revisited:
 
+- Small
 - Readable
 - Consistent
 - Orthogonal
